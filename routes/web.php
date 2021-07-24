@@ -1,5 +1,6 @@
 <?php
-
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\EnquiryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::group(['middleware' => 'auth:web'], function () {
+    Route::get('/dashboard', [LoginController::class, 'dashboard']);
+	Route::resource('enquiries', EnquiryController::class);
+    Route::get('/', [LoginController::class, 'dashboard']);
+ });
+
+
+
+
+require __DIR__.'/auth.php';
